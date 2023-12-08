@@ -333,6 +333,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
+  Speed: 0
+  h: 0
+  v: 0
+  Arcade: {fileID: 4998369837815800431, guid: d3ecb5ae7b2a7e048b48e3219efd623d, type: 3}
 --- !u!1 &4013421336220752228
 GameObject:
   m_ObjectHideFlags: 0

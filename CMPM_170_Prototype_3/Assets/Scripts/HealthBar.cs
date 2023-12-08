@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] float currentHealth = 100f;
+    public float currentHealth = 100f;
     [Range(1, 10)]
     [SerializeField] private int multiplier = 1;
     [SerializeField] Image panelImage;
@@ -24,7 +24,7 @@ public class HealthBar : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         if (currentHealth <= 0)
         {
