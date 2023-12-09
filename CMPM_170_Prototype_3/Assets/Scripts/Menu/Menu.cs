@@ -7,6 +7,10 @@ using TMPro;
 
 public class Menu : MonoBehaviour
 {
+
+    public void GotToMenu() {
+        SceneManager.LoadScene(0);
+    }
     public void GoToPrototype1() {
         SceneManager.LoadScene(2);
     }
