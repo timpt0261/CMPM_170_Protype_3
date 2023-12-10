@@ -17,9 +17,15 @@ public class Timer : MonoBehaviour
         timeIcon.color = initialImageColor;
         timeIcon.fillAmount = 1;
     }
-
+ 
 
     void FixedUpdate()
+    {
+
+        UpdateHealth();
+    }
+
+    private void UpdateHealth()
     {
         if (timeRemaining <= 0)
         {
@@ -28,11 +34,7 @@ public class Timer : MonoBehaviour
         }
 
         timeRemaining -= Time.deltaTime * multiplier;
-        UpdateHealth();
-    }
 
-    private void UpdateHealth()
-    {
         float normalizedHealth = timeRemaining / 100f;
 
         // Invert the normalized health to get a more noticeable color transition

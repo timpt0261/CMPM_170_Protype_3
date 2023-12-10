@@ -26,6 +26,12 @@ public class HealthBar : MonoBehaviour
 
     void FixedUpdate()
     {
+       
+        UpdateHealth();
+    }
+
+    private void UpdateHealth()
+    {
         if (currentHealth <= 0)
         {
             Debug.Log("GameOver");
@@ -33,11 +39,7 @@ public class HealthBar : MonoBehaviour
         }
 
         currentHealth -= Time.deltaTime * multiplier;
-        UpdateHealth();
-    }
 
-    private void UpdateHealth()
-    {
         float normalizedHealth = currentHealth / 100f;
 
         // Invert the normalized health to get a more noticeable color transition
