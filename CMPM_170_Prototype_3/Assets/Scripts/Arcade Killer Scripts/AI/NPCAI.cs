@@ -9,68 +9,40 @@ public class NPCAI : MonoBehaviour
 
     private enum State{ idle, walk, play, die };
     private State state;
-    float current, rot;
-    public float Speed, h, v;
     public GameObject Arcade;
+    private float timeSinceLastAction;
+    private float waitTime;
+    public Vector2 waitTimeRange;
+    public GameObject fovObject;
+
+    void Awake() {
+        agent = GetComponent<NavMeshAgent>();
+    }
 
     void Start()
     {
         state = State.idle;
-        current = 0;
-        Speed = 10f;
-        h = 0f; v = 0.01f;
-        //Debug.Log((int)state);
+        getNextDestination();
+        fovObject.GetComponent<MeshFilter>().sharedMesh = FieldOfViewGenerator.GenerateFOVMesh(20, 5f, Mathf.PI/2, 0.1f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        current += Time.deltaTime;
-
-        if(current > 1)
-        {
-            state = (State)Random.Range(0, 2);
-            current = 0;
-        }
-
-        if (transform.rotation.y < 0) {
-            rot = 360 + transform.eulerAngles.y;
-        }
-        else
-        {
-            rot = transform.eulerAngles.y;
-        }
-
-        if (state == State.walk)
-        {
-            if (
-                (transform.position.x > 17 && rot < 180 && rot > 0) || 
-                (transform.position.x < -17 && rot > 180 && rot < 360) || 
-                (transform.position.z > 17 && (rot < 90 || rot > 270)) || 
-                (transform.position.z < -17 && rot > 90 && rot < 270)
-                )
-            {
-                Speed = 0f;
-                state = State.idle;
-            }
-            else
-            {
-                Speed = 10f;
-            }
-            transform.Translate(new Vector3 (0, 0, Speed * Time.deltaTime));
-            Debug.Log(state);
-        }
-        if(state == State.idle)
-        {
-            transform.Rotate(new Vector3(0, 20f * Time.deltaTime, 0));
-            Debug.Log(state);
-
-        }
-        if(state == State.play)
-        {
-            Debug.Log((int)state);
+        float currentTime = Time.time;
+        if(currentTime - timeSinceLastAction >= waitTime) {
+            getNextDestination();
         }
     }
 
+    private void getNextDestination() {
+        waitTime = Random.Range(waitTimeRange.x, waitTimeRange.y);
+        timeSinceLastAction = Time.time;
+        agent.destination = randomDestination(-15, -15, 15, 15);
+    }
+
+    private Vector3 randomDestination(float minX, float minY, float maxX, float maxY) {
+        return new Vector3(Random.Range(minX, maxX), 0f, Random.Range(minY, maxY));
+    }
 
 }

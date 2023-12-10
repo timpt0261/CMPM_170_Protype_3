@@ -5,15 +5,39 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     
-    public GameObject NPC;
-    void Start()
-    {
-        //Initialize 10 NPCS to walk around
+    public GameObject NpcPrefab;
+    public float maxNpcs;
+    [Range(0, 1)]
+    public float initialSpawnPercentage;
+    public float spawnBoundsMinX;
+    public float spawnBoundsMinY;
+    public float spawnBoundsMaxX;
+    public float spawnBoundsMaxY;
+    public float spawnTime;
+    private float lastSpawnTime;
+    private List<GameObject> npcs;
+
+    void Start() {
+        lastSpawnTime = Time.time;
+        npcs = new List<GameObject>();
+        for(int i = 0; i < maxNpcs * initialSpawnPercentage; i++) {
+            attemptSpawn();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Check if one is down, if so respawn it
+    void Update() {
+        float currentTime = Time.time;
+        if(currentTime - lastSpawnTime >= spawnTime) {
+            attemptSpawn();
+        }
+    }
+
+    private bool attemptSpawn() {
+        lastSpawnTime = Time.time;
+        if(npcs.Count >= maxNpcs) return false;
+        Vector3 spawnPosition = new Vector3(Random.Range(spawnBoundsMinX, spawnBoundsMaxX), 0f, Random.Range(spawnBoundsMinY, spawnBoundsMaxY));
+        GameObject newNpc = Instantiate(NpcPrefab, spawnPosition, Quaternion.identity);
+        npcs.Add(newNpc);
+        return true;
     }
 }
