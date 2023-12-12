@@ -14,18 +14,18 @@ public class Player : MonoBehaviour
     Vector3 mousePos;
     [SerializeField] private RectTransform CursorObj;
     [SerializeField] private Canvas canvas;
-    [SerializeField]
-    private GameObject bullet;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private AudioSource pew;
     Vector3 rotateUp = new Vector3(-1, 0, 0);
     Vector3 rotateDown = new Vector3(1, 0, 0);
     Vector3 rotateLeft = new Vector3(0, 1, 0);
     Vector3 rotateRight = new Vector3(0, -1, 0);
-    Vector3 previousMousePos;
+    
 
     private void Start()
     {
         Cursor.visible = false;
-        previousMousePos = Mouse.current.position.ReadValue();
+        
 
     }
     private void Update()
@@ -47,8 +47,8 @@ public class Player : MonoBehaviour
             Vector3 worldBulletPosition = CursorObj.TransformPoint(new Vector3(0, 0, 0));
             Vector3 directionToCursor = (CursorObj.position - transform.position).normalized;
             GameObject bulletInstance = Instantiate(bullet, worldBulletPosition, Quaternion.LookRotation(directionToCursor));
-            
             Rigidbody bulletRb = bulletInstance.GetComponent<Rigidbody>();
+            pew.Play();
             bulletRb.AddForce(directionToCursor * bulletSpeed, ForceMode.Impulse);
             
         }
