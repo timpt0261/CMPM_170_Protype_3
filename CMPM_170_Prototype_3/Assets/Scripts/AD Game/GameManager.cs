@@ -4,26 +4,29 @@ using System.Data.SqlTypes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    int INITIALHEALTH = 100;
+    int INITIALRETENTION = 100;
     int INITIALMONEY = 0;
-    [SerializeField] private Slider healthBar;
+    [SerializeField] private Slider retentionBar;
     [SerializeField] private TextMeshProUGUI MoneyText;
-    [SerializeField] private int currentHealth;
+    [SerializeField] private int currentRetention;
     [SerializeField] private int currentMoney;
+    [SerializeField] private GameObject Timer;
 
+    //NOTE: Health is relating to when the player gives bad ads 
 
     private void Start()
     {
         
-        currentHealth = INITIALHEALTH;
+        currentRetention = INITIALRETENTION;
         currentMoney = INITIALMONEY;
-        healthBar.value = currentHealth;
+        retentionBar.value = currentRetention;
         MoneyText.text = "$" + currentMoney.ToString();
-
+        StartCoroutine(RetentionDecayOverTime());
     }
 
     private void Update()
@@ -36,15 +39,27 @@ public class GameManager : MonoBehaviour
         var keyboard = Keyboard.current;
         if (keyboard.zKey.isPressed)
         {
-            ModifyHealth(-1);
+            modifyRetention(-1);
             ModifyMoney(1);
         }
     }
 
-    private void ModifyHealth(int amount)
+    private IEnumerator RetentionDecayOverTime()
     {
-        currentHealth += amount;
-        healthBar.value = currentHealth;
+        while (currentRetention > 0)
+        {
+            currentRetention -= 1;
+            retentionBar.value = currentRetention;
+            yield return new WaitForSeconds(1);
+        }
+        SceneManager.LoadScene("GameOver");
+        
+    }
+
+    private void modifyRetention(int amount)
+    {
+        currentRetention += amount;
+        retentionBar.value = currentRetention;
     }
 
    private void ModifyMoney(int amount)
@@ -65,7 +80,7 @@ public class GameManager : MonoBehaviour
 
     public int GetCurrentHealth()
     {
-        return currentHealth;
+        return currentRetention;
     }
 
 
