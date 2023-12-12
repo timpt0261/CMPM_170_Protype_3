@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -32,7 +33,8 @@ public class GameManager : MonoBehaviour
 
     private void TestInput()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        var keyboard = Keyboard.current;
+        if (keyboard.zKey.isPressed)
         {
             ModifyHealth(-1);
             ModifyMoney(1);

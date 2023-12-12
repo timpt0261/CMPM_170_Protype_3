@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 77252320}
   - component: {fileID: 77252319}
   - component: {fileID: 77252318}
+  - component: {fileID: 77252321}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -148,7 +149,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 77252317}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -196,9 +197,24 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 506, y: 209}
+  m_AnchoredPosition: {x: 479.5, y: 209}
   m_SizeDelta: {x: -1000, y: -414}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &77252321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77252317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fd7b01c18d8194eaf0417e26003dda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeRemaining: 100
+  multiplier: 1
+  timeIcon: {fileID: 77252318}
 --- !u!1 &235997723
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,7 +645,6 @@ GameObject:
   - component: {fileID: 748343263}
   - component: {fileID: 748343262}
   - component: {fileID: 748343261}
-  - component: {fileID: 748343260}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -637,21 +652,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &748343260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748343259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59fd7b01c18d8194eaf0417e26003dda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeRemaining: 100
-  multiplier: 1
-  timeIcon: {fileID: 77252318}
 --- !u!114 &748343261
 MonoBehaviour:
   m_ObjectHideFlags: 0

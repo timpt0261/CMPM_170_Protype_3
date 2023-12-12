@@ -22,10 +22,10 @@ public class Timer : MonoBehaviour
     void FixedUpdate()
     {
 
-        UpdateHealth();
+        UpdateTime();
     }
 
-    private void UpdateHealth()
+    private void UpdateTime()
     {
         if (timeRemaining <= 0)
         {
@@ -35,16 +35,16 @@ public class Timer : MonoBehaviour
 
         timeRemaining -= Time.deltaTime * multiplier;
 
-        float normalizedHealth = timeRemaining / 100f;
+        float normalizedTime = timeRemaining / 100f;
 
         // Invert the normalized health to get a more noticeable color transition
-        float invertedNormalizedHealth = 1f - normalizedHealth;
+        float invertedNormalizedTime = 1f - normalizedTime;
 
         // Create a new color with the same RGB values as initialImageColor but with alpha set to 1
         Color targetColor = new Color(initialImageColor.r, initialImageColor.g, initialImageColor.b, 1f);
 
-        timeIcon.color = Color.Lerp(targetColor, Color.red, invertedNormalizedHealth);
-        timeIcon.fillAmount = normalizedHealth;
+        timeIcon.color = Color.Lerp(targetColor, Color.red, invertedNormalizedTime);
+        timeIcon.fillAmount = normalizedTime;
     }
 
 
