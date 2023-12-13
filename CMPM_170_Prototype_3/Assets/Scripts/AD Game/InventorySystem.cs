@@ -14,6 +14,8 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] private GameManager gameManager;
     [SerializeField] private GameObject[] adSlots;
     [SerializeField] private AdType[] adtypes;
+    [SerializeField] private GameObject[] adPrefabs;
+    [SerializeField] private AudioSource audioDropSFX;
     private bool dragging = false;
     public GameObject uiCanvas;
     GraphicRaycaster uiRaycaster;
@@ -29,7 +31,6 @@ public class InventorySystem : MonoBehaviour
         
         uiRaycaster = uiCanvas.GetComponent<GraphicRaycaster>();
         clickData = new PointerEventData(EventSystem.current);
-        Debug.Log(clickData);
         clickResults = new List<RaycastResult>();
         clickedElements = new List<GameObject>();
         AdInitialization();
@@ -59,18 +60,39 @@ public class InventorySystem : MonoBehaviour
            
             if (dragElement != null)
             {
-                Ad currentAd = dragElement.GetComponent<Ad>();
-                dragElement.transform.position = currentAd.getDefaultPos();
-                
-                gameManager.ApplyAd(currentAd);
-                dragElement = null;
+                HandleDrop();
             }
             
             
         }
         previousMousePos = mousePos;
     }
-
+    private void HandleDrop()
+    {
+        Ad currentAd = dragElement.GetComponent<Ad>();
+        GameObject instantiatedAd = null;
+       
+        if (currentAd.GetTypeAd() == "Bad")
+        {
+            instantiatedAd = Instantiate(adPrefabs[0], dragElement.transform);
+        } else if (currentAd.GetTypeAd() == "Good")
+        {
+            instantiatedAd = Instantiate(adPrefabs[1], dragElement.transform);
+        } else if (currentAd.GetTypeAd() == "Glorious")
+        {
+            instantiatedAd = Instantiate(adPrefabs[2], dragElement.transform);
+        } else if (currentAd.GetTypeAd() == "Horrible")
+        {
+            instantiatedAd = Instantiate(adPrefabs[3], dragElement.transform);
+        }
+        instantiatedAd.transform.SetParent(uiCanvas.transform, true);
+        audioDropSFX.Play();
+        dragElement.transform.position = currentAd.getDefaultPos();
+        gameManager.ApplyAd(currentAd);
+        AdType type = adtypes[WeightedRandom()];
+        currentAd.SetAndRandomize(type);
+        dragElement = null;
+    }
     private void DragAd()
     {
         RectTransform element_rect = dragElement.GetComponent<RectTransform>();
@@ -99,21 +121,43 @@ public class InventorySystem : MonoBehaviour
         }
          
     }
+    
+    private int WeightedRandom()
+    {
+        int randomNum = Random.Range(0, 100);
+        int firstTypeIndex = 0;
+        int secondTypeIndex = 1;
+        int thirdTypeIndex = 2;
+        int fourthTypeIndex = 3;
+        if (randomNum <= 10)
+        {
+            return fourthTypeIndex;
+        } else if (randomNum > 15 && randomNum <= 30)
+        {
+            return thirdTypeIndex;
+        } else if (randomNum > 30 && randomNum <= 70)
+        {
+            return firstTypeIndex;
+        } else
+        {
+            return secondTypeIndex;
+        }
+    }
     private void AdInitialization()
     {
-        int count = 0;
+  
         foreach (GameObject slot in adSlots)
         {
-            Debug.Log(count++);
             Ad adFromSlot = slot.GetComponent<Ad>();
-            AdType type = adtypes[Random.Range(0, adtypes.Length-1)];
+            
+            AdType type = adtypes[WeightedRandom()];
             adFromSlot.SetAndRandomize(type);
         }
     }
     private void AdRandomization()
     {
-        GameObject randomSlot = adSlots[Random.Range(0, adSlots.Length-1)];
-        AdType randomAdtype = adtypes[Random.Range(0, adtypes.Length - 1)];
+        GameObject randomSlot = adSlots[Random.Range(0, adSlots.Length)];
+        AdType randomAdtype = adtypes[Random.Range(0, adtypes.Length)];
         Ad adFromSlot = randomSlot.GetComponent<Ad>();
         adFromSlot.SetAndRandomize(randomAdtype);
     }

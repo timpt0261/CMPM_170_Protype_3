@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        TestInput();
+        
     }
 
     private void TestInput()
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     {
         while (currentRetention > 0)
         {
-            currentRetention -= 1;
+            currentRetention -= 2;
             retentionBar.value = currentRetention;
             yield return new WaitForSeconds(1);
         }
@@ -71,10 +71,13 @@ public class GameManager : MonoBehaviour
     public void ApplyAd(Ad adToApply)
     {
         Debug.Log(adToApply.GetAdMoney());
-        Debug.Log(adToApply.GetAttention());
         currentMoney += adToApply.GetAdMoney();
         MoneyText.text = "$" + currentMoney;
         currentRetention += adToApply.GetAttention();
+        if (currentRetention > 100)
+        {
+            currentRetention = 100;
+        }
         retentionBar.value = currentRetention;
     }
 

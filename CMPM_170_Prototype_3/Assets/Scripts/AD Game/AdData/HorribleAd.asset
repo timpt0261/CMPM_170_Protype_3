@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a517b113ca25a87438eeae124d2854d3, type: 3}
-  m_Name: GloriousAd
+  m_Name: HorribleAd
   m_EditorClassIdentifier: 
-  adSprite: {fileID: 21300000, guid: fac633656ee3c4b4a8a64f197bef99c9, type: 3}
-  type: Glorious
+  adSprite: {fileID: 21300000, guid: 6a2d54ae2fedaf3439527bd953cd7af3, type: 3}
+  type: Horrible

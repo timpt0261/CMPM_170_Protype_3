@@ -10,16 +10,14 @@ public class Ad : MonoBehaviour
     private string type;
     [SerializeField] private Image Img;
     private Sprite defaultSprite;
-    int moneyImpact;
-    int AttentionImpact;
+    [SerializeField] private int moneyImpact;
+    [SerializeField] private int AttentionImpact;
     Vector2 defaultPos;
 
     void Start()
     {
-        type = "";
+        
         defaultSprite = Img.sprite;
-        moneyImpact = 0;
-        AttentionImpact = 0;
         defaultPos = gameObject.transform.position;
         
         
@@ -49,17 +47,20 @@ public class Ad : MonoBehaviour
                 moneyImpact = 1000;
                 AttentionImpact = 50;
                 break;
+            case "Horrible":
+                moneyImpact = -500;
+                AttentionImpact = -50;
+                break;
         }
-        Debug.Log(type);
-        Debug.Log(moneyImpact);
-        Debug.Log(AttentionImpact);
-        
+       
         
     }
     private void Reset()
     {
         type = "";
         Img.sprite = defaultSprite;
+        moneyImpact = 0;
+        AttentionImpact = 0;
     }
 
     public Vector2 getDefaultPos()
@@ -74,5 +75,10 @@ public class Ad : MonoBehaviour
     public int GetAttention()
     {
         return AttentionImpact;
+    }
+
+    public string GetTypeAd()
+    {
+        return type;
     }
 }
