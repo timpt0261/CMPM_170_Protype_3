@@ -12,7 +12,7 @@ public class Ad : MonoBehaviour
     private Sprite defaultSprite;
     int moneyImpact;
     int AttentionImpact;
-    Vector2 initialPos;
+    Vector2 defaultPos;
 
     void Start()
     {
@@ -20,8 +20,8 @@ public class Ad : MonoBehaviour
         defaultSprite = Img.sprite;
         moneyImpact = 0;
         AttentionImpact = 0;
-        initialPos = gameObject.transform.position;
-        Debug.Log(initialPos);
+        defaultPos = gameObject.transform.position;
+        
         
     }
 
@@ -50,6 +50,9 @@ public class Ad : MonoBehaviour
                 AttentionImpact = 50;
                 break;
         }
+        Debug.Log(type);
+        Debug.Log(moneyImpact);
+        Debug.Log(AttentionImpact);
         
         
     }
@@ -57,5 +60,19 @@ public class Ad : MonoBehaviour
     {
         type = "";
         Img.sprite = defaultSprite;
+    }
+
+    public Vector2 getDefaultPos()
+    {
+        return defaultPos;
+    }
+    public int GetAdMoney()
+    {
+        return moneyImpact;
+    }
+
+    public int GetAttention()
+    {
+        return AttentionImpact;
     }
 }

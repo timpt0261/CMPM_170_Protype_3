@@ -68,9 +68,14 @@ public class GameManager : MonoBehaviour
         MoneyText.text = "$" + currentMoney.ToString();
     }
     //For Gabe <30330301-3i012904531-04 vvvvvvvvvv
-    public void ApplyAd()
+    public void ApplyAd(Ad adToApply)
     {
-
+        Debug.Log(adToApply.GetAdMoney());
+        Debug.Log(adToApply.GetAttention());
+        currentMoney += adToApply.GetAdMoney();
+        MoneyText.text = "$" + currentMoney;
+        currentRetention += adToApply.GetAttention();
+        retentionBar.value = currentRetention;
     }
 
     public int GetCurrentMoney()
