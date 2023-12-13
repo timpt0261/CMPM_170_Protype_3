@@ -3,14 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-<<<<<<< Updated upstream
-  - Ad
-=======
-  - projectile
-  - fov
-  - npc
->>>>>>> Stashed changes
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -18,9 +11,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Npc
-  - Player
-  - Lasers
+  - 
+  - 
+  - 
   - 
   - 
   - 

@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        
+        Cursor.lockState = CursorLockMode.Confined;
         currentRetention = INITIALRETENTION;
         currentMoney = INITIALMONEY;
         retentionBar.value = currentRetention;

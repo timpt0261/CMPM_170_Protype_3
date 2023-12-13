@@ -17,8 +17,10 @@ public class Ad : MonoBehaviour
     void Start()
     {
         
+        
         defaultSprite = Img.sprite;
-        defaultPos = gameObject.transform.position;
+        defaultPos = transform.position;
+        
         
         
     }
@@ -65,6 +67,7 @@ public class Ad : MonoBehaviour
 
     public Vector2 getDefaultPos()
     {
+        
         return defaultPos;
     }
     public int GetAdMoney()

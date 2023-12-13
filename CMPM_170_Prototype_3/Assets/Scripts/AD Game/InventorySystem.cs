@@ -16,12 +16,12 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] private AdType[] adtypes;
     [SerializeField] private GameObject[] adPrefabs;
     [SerializeField] private AudioSource audioDropSFX;
-    private float minY = 256;
-    private float maxY = 557;
-    private float minX = 148;
-    private float maxX = 1013;
+    private float minY = 270;
+    private float maxY = 720;
+    private float minX = 250;
+    private float maxX = 1350;
     private bool dragging = false;
-    public GameObject uiCanvas;
+    public Canvas uiCanvas;
     GraphicRaycaster uiRaycaster;
     PointerEventData clickData;
     List<RaycastResult> clickResults;
@@ -32,7 +32,6 @@ public class InventorySystem : MonoBehaviour
     Vector3 mousePos;
     void Start()
     {
-        
         uiRaycaster = uiCanvas.GetComponent<GraphicRaycaster>();
         clickData = new PointerEventData(EventSystem.current);
         clickResults = new List<RaycastResult>();
@@ -48,10 +47,10 @@ public class InventorySystem : MonoBehaviour
 
     private void MouseDragUI()
     {
-        mousePos = Mouse.current.position.ReadValue();
-        
+        mousePos = Mouse.current.position.ReadValue() / uiCanvas.scaleFactor;
 
-        if(Mouse.current.leftButton.wasPressedThisFrame )
+
+        if (Mouse.current.leftButton.wasPressedThisFrame )
         {
             GetUIElementsClicked();
         }
@@ -77,20 +76,22 @@ public class InventorySystem : MonoBehaviour
         Ad currentAd = dragElement.GetComponent<Ad>();
         
         GameObject instantiatedAd = null;
-        float dragElementPosX = dragElement.transform.position.x;
-        float dragElementPosY = dragElement.transform.position.y;
+        /*float dragElementPosX = ((RectTransform) dragElement.transform).anchoredPosition.x;
+        float dragElementPosY = ((RectTransform) dragElement.transform).anchoredPosition.y;*/
         //checks if in x bounds
-       if (!(dragElementPosX > minX && dragElementPosX < maxX))
+       /*if (!(dragElementPosX > minX / uiCanvas.scaleFactor && dragElementPosX < maxX / uiCanvas.scaleFactor))
         {
-            dragElement.transform.position = currentAd.getDefaultPos();
+            dragElement.transform.position = (currentAd.getDefaultPos());
+            Debug.Log("HI");
             return;
         }
        //checks if in y bounds
-        if (!(dragElementPosY > minY && dragElementPosY < maxY))
+        if (!(dragElementPosY > minY / uiCanvas.scaleFactor && dragElementPosY < maxY / uiCanvas.scaleFactor))
         {
-            dragElement.transform.position = currentAd.getDefaultPos();
+            Debug.Log("Hi");
+            dragElement.transform.localPosition = (currentAd.getDefaultPos());
             return;
-        }
+        }*/
         if (currentAd.GetTypeAd() == "Bad")
         {
             instantiatedAd = Instantiate(adPrefabs[0], dragElement.transform);
@@ -106,7 +107,9 @@ public class InventorySystem : MonoBehaviour
         }
         instantiatedAd.transform.SetParent(uiCanvas.transform, true);
         audioDropSFX.Play();
-        dragElement.transform.position = currentAd.getDefaultPos();
+        dragElement.transform.position = currentAd.getDefaultPos(); 
+        
+        
         gameManager.ApplyAd(currentAd);
         AdType type = adtypes[WeightedRandom()];
         currentAd.SetAndRandomize(type);
@@ -115,15 +118,14 @@ public class InventorySystem : MonoBehaviour
     private void DragAd()
     {
         RectTransform element_rect = dragElement.GetComponent<RectTransform>();
-
+        
         Vector2 drag_movement = mousePos - previousMousePos;
 
         element_rect.anchoredPosition = element_rect.anchoredPosition + drag_movement;
     }
     private void GetUIElementsClicked()
     {
-        
-        clickData.position = mousePos;
+        clickData.position = Input.mousePosition;
         clickResults.Clear();
         uiRaycaster.Raycast(clickData, clickResults);
         clickedElements.Clear();
