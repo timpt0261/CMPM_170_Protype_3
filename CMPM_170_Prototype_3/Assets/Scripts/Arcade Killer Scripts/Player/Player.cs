@@ -24,14 +24,12 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
-        
-
     }
     private void Update()
     {
         CameraMovement();
-        
         
         UpdateCursor();
 
@@ -41,46 +39,70 @@ public class Player : MonoBehaviour
     private void ShootMoment()
     {
         //We want a projectile to come out
-        if(Mouse.current.leftButton.wasPressedThisFrame)
+        if(Input.GetMouseButtonDown(0))
         {
-           
             Vector3 worldBulletPosition = CursorObj.TransformPoint(new Vector3(0, 0, 0));
             Vector3 directionToCursor = (CursorObj.position - transform.position).normalized;
-            GameObject bulletInstance = Instantiate(bullet, worldBulletPosition, Quaternion.LookRotation(directionToCursor));
-            Rigidbody bulletRb = bulletInstance.GetComponent<Rigidbody>();
             pew.Play();
-            bulletRb.AddForce(directionToCursor * bulletSpeed, ForceMode.Impulse);
-            
+            RaycastHit hit;
+            if(Physics.Raycast(worldBulletPosition, directionToCursor, out hit)) {
+                GameObject npc = hit.collider.gameObject;
+                NPCColliderScript colliderScript = npc.GetComponent<NPCColliderScript>();
+                if(colliderScript) {
+                    bool wasSeen = colliderScript.isSeen();
+                    Debug.Log("Was Seen: " + wasSeen);
+                    canvas.GetComponent<HealthBar>().addHealth(FindObjectOfType<Spawner>().killNpc(colliderScript.parent.GetComponent<NPCAI>()));
+                    if(wasSeen) canvas.GetComponent<HealthBar>().lose();
+                }
+            }
         }
     }
     private void CameraMovement()
     {
-        var keyboard = Keyboard.current;
-        if (keyboard.wKey.isPressed)
+        if (Input.GetKey(KeyCode.W))
         {
             transform.Rotate(rotateUp, camRotationSpeed * Time.deltaTime);
         }
-        else if (keyboard.sKey.isPressed)
+        if (Input.GetKey(KeyCode.S))
         {
             transform.Rotate(rotateDown, camRotationSpeed * Time.deltaTime);
         }
-        else if (keyboard.dKey.isPressed)
+        if (Input.GetKey(KeyCode.D))
         {
             transform.Rotate(rotateLeft, camRotationSpeed * Time.deltaTime);
         }
-        else if (keyboard.aKey.isPressed)
+        if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(rotateRight, camRotationSpeed * Time.deltaTime);
         }
 
         Vector3 currentRotation = transform.eulerAngles;
+        if(currentRotation.y < 300 && currentRotation.y > 60) {
+            float distTo300 = 330 - currentRotation.y;
+            float distTo60 = currentRotation.y - 60;
+            if(distTo300 < distTo60) {
+                currentRotation.y = 300;
+            } else {
+                currentRotation.y = 60;
+            }
+        }
+        if(currentRotation.x < 330 && currentRotation.x > 30) {
+            float distTo330 = 330 - currentRotation.x;
+            float distTo30 = currentRotation.x - 30;
+            if(distTo330 < distTo30) {
+                currentRotation.x = 330;
+            } else {
+                currentRotation.x = 30;
+            }
+        }
+        Debug.Log(currentRotation);
         currentRotation.z = 0;
         transform.eulerAngles = currentRotation;
     }
 
     private void UpdateCursor()
     {
-        mousePos = Mouse.current.position.ReadValue();
+        mousePos = Input.mousePosition;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
         canvas.gameObject.transform as RectTransform, mousePos, canvas.worldCamera, out Vector2 localMousePos);
