@@ -30,12 +30,22 @@ public class HealthBar : MonoBehaviour
         UpdateHealth();
     }
 
+    public void addHealth(float health) {
+        currentHealth = Mathf.Clamp(currentHealth + health, 0, 100);
+    }
+
+    public void lose() {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
+            Debug.Log("GameOver");
+            SceneManager.LoadScene(1);
+    }
+
     private void UpdateHealth()
     {
         if (currentHealth <= 0)
         {
-            Debug.Log("GameOver");
-            SceneManager.LoadScene(1);
+            lose();
         }
 
         currentHealth -= Time.deltaTime * multiplier;

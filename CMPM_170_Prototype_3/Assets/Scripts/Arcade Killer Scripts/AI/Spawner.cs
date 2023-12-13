@@ -40,4 +40,10 @@ public class Spawner : MonoBehaviour
         npcs.Add(newNpc);
         return true;
     }
+
+    public int killNpc(NPCAI npc) {
+        npcs.Remove(npc.gameObject);
+        Destroy(npc.gameObject);
+        return npc.points;
+    }
 }
