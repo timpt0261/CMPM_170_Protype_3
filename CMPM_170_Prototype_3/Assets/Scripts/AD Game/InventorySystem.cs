@@ -16,6 +16,10 @@ public class InventorySystem : MonoBehaviour
     [SerializeField] private AdType[] adtypes;
     [SerializeField] private GameObject[] adPrefabs;
     [SerializeField] private AudioSource audioDropSFX;
+    private float minY = 256;
+    private float maxY = 557;
+    private float minX = 148;
+    private float maxX = 1013;
     private bool dragging = false;
     public GameObject uiCanvas;
     GraphicRaycaster uiRaycaster;
@@ -45,6 +49,7 @@ public class InventorySystem : MonoBehaviour
     private void MouseDragUI()
     {
         mousePos = Mouse.current.position.ReadValue();
+        
 
         if(Mouse.current.leftButton.wasPressedThisFrame )
         {
@@ -70,8 +75,22 @@ public class InventorySystem : MonoBehaviour
     private void HandleDrop()
     {
         Ad currentAd = dragElement.GetComponent<Ad>();
+        
         GameObject instantiatedAd = null;
-       
+        float dragElementPosX = dragElement.transform.position.x;
+        float dragElementPosY = dragElement.transform.position.y;
+        //checks if in x bounds
+       if (!(dragElementPosX > minX && dragElementPosX < maxX))
+        {
+            dragElement.transform.position = currentAd.getDefaultPos();
+            return;
+        }
+       //checks if in y bounds
+        if (!(dragElementPosY > minY && dragElementPosY < maxY))
+        {
+            dragElement.transform.position = currentAd.getDefaultPos();
+            return;
+        }
         if (currentAd.GetTypeAd() == "Bad")
         {
             instantiatedAd = Instantiate(adPrefabs[0], dragElement.transform);
